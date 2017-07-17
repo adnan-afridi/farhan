@@ -453,3 +453,4 @@ ul, ul li, ul ol, ul li ul, ul li ul li { list-style: none; margin: 0; }
 .msg-senders tbody th:nth-of-type(odd){background-color: #ccc;}
 .profile-action-dropdown{position: absolute;right: 0;}
 .banner-popup { text-align:left !important; margin-bottom:5px !important; margin-top:10px !important; }
+.profile-btns-message{position: absolute ;right: 206px;bottom: 72px;background: #80befc;color: #fff;display: inline-block;background: #f5d76e;font-size: 16px;color: #444;line-height: 34px;font-weight: normal;width: 140px;text-decoration: none;text-align: center;margin-left: 7px;}

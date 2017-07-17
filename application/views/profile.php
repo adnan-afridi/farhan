@@ -53,6 +53,17 @@ $userData = $model->get(array('user_id' => $userId), 1);
                                     </div>
                                     <div class="profile-banner">
                                         <img class="img-responsive" id="banner-img" src="assets/images/banner_images/<?php echo (!empty($profileData['profile_banner'])) ? $profileData['profile_banner'] : 'profile-banner.png'; ?>" alt="" title="" />
+                                        
+                                         <?php  if ($relation != "" && $userId != $profileData['user_id']) { ?>
+                                            <div class="profile-btns-message"> 
+                                                <?php if ($relation == '1') { ?>
+                                                    <a href="<?php echo base_url()?>pm/send/<?php echo $profileData['user_id']; ?>">Message</a>
+                                                     <?php
+                                                }?>
+                                            </div>
+                                        <?php } ?>
+                                        
+                                        
                                         <?php if ($relation != "") { ?>
                                             <div class="profile-btns"> 
                                                 <?php if ($relation == '1') { ?>

@@ -366,6 +366,13 @@ class Pm extends CI_Controller {
      * @return void
      */
     function send($recipients = NULL, $subject = NULL, $body = NULL) {
+		if(is_numeric($recipients)){
+		
+		$recipient_email	=	$this->Profile_model->get_signle_value(array('user_id'=>$recipients),'user_email','users');
+		
+		$data['recipient_email'] = $recipient_email;
+		}
+		
         $rules = $this->config->item('pm_form', 'form_validation');
 //        print_r($rules);exit;
         $this->form_validation->set_rules($rules);

@@ -52,7 +52,7 @@
                                         <?php
                                         echo form_label('To', $recipients['id']);
 
-                                        $recipients = array('name' => 'recipients', 'id' => 'recipients', 'class' => 'form-control col-sm-5', 'placeholder' => 'Enter email');
+                                        $recipients = array('name' => 'recipients', 'id' => 'recipients', 'class' => 'form-control col-sm-5', 'placeholder' => 'Enter email','value'=>@$recipient_email);
                                         echo form_input($recipients);
 
                                         echo form_error($recipients['name'], '<div class="error">', '</div>');
