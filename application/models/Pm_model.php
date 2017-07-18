@@ -184,13 +184,17 @@ class Pm_model extends CI_Model {
         $t1 = $this->table1->get_name();
         $t2 = $this->table2->get_name();
 
-        $this->db->select(TF_PM_AUTHOR);
+        $this->db->select(TF_PM_AUTHOR.','. TF_PM_BODY.',profile_image');
         $this->db->from($t2);
         $this->db->join($t1, TF_PM_ID.'='.TF_PMTO_MESSAGE);
+        $this->db->join('profile ', 'user_id = '.TF_PM_AUTHOR);
         $this->db->where(TF_PMTO_READ, 0);
         $this->db->where(TF_PMTO_RECIPIENT, $this->user_id);
+        $this->db->order_by(TF_PMTO_MESSAGE,'DESC');
+        $this->db->limit(1);
 
-        return $this->table1->get_data();
+        return $this->db->get()->result_array();
+        
     }
 
     public function get_message($msg_id) {

@@ -27,7 +27,10 @@
                                         <table class="table table-bordered table-striped msg-thread" id="msg-thread">
 
                                             <tbody>
-                                                <?php foreach ($messages as $i => $msg) { ?>   
+                                                <?php foreach ($messages as $i => $msg) { 
+                                                    if($msg['pmto_deleted'] == 1)
+                                                        continue;
+                                                    ?>   
                                                     <tr>
                                                         <td>
                                                             <img src="<?php echo base_url(); ?>assets/images/profile_images/<?php echo $msg['profile_image']; ?>" width="30px" height="30px"/><?php echo $msg['privmsg_body'] ?>

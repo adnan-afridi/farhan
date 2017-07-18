@@ -122,7 +122,7 @@ class Main extends CI_Controller {
             $userAssesment = $userModel->getUserAssesment();
 //            print_r($userAssesment);exit;
             if ($userAssesment['assesment'] == 1) {
-                redirect(base_url('Main'));
+                redirect(base_url('Profile/timeline'));
             }
             else {
                 $this->session->set_flashdata('error', 'Complete assesment first to activate your account.');
@@ -248,8 +248,9 @@ class Main extends CI_Controller {
 //MESSAGES
         $pmModel = model_load_model('Pm_model');
         $msgNotification = $pmModel->get_messages_notifications();
-        
-        print_r($msgNotification);exit;
+//echo $this->db->last_query();exit;
+//        print_r($msgNotification);
+//        exit;
 
         if ($notifications) {
             ?>
@@ -272,7 +273,8 @@ class Main extends CI_Controller {
                     <?php } ?> 
                 </ul>
             </div>
-        <?php }
+            <?php
+        }
         else {
             ?>
             <div class="notification-detail no-notification">
@@ -287,7 +289,7 @@ class Main extends CI_Controller {
         <?php if ($tagNotification || $tagCommentsNotification) { ?>
             <div class="tag-notification-detail">
                 <ul>
-            <?php foreach ($tagNotification as $tn) { ?>
+                    <?php foreach ($tagNotification as $tn) { ?>
                         <li>
                             <a href="<?php echo base_url('Posts/view_post?id='.$tn['post_id']); ?>"><?php echo $tn['title']; ?></a>
                         </li>
@@ -298,10 +300,10 @@ class Main extends CI_Controller {
                         <li>
                             <a href="<?php echo base_url('Posts/view_post?id='.$tcn['post_id']); ?>"><?php echo substr($tcn['comment_body'], 0, 50); ?></a>
                         </li>
-            <?php } ?> 
+                    <?php } ?> 
                 </ul>
             </div>
-        <?php
+            <?php
         }
         else {
             ?>
@@ -310,22 +312,56 @@ class Main extends CI_Controller {
                     <li>No notifications</li>
                 </ul>
             </div>
-        <?php }
-        ?>
+        <?php } ?>
+
+        <!--messages notifications-->
+        <?php if ($msgNotification) { ?>
+            <div class="msg-notification-detail">
+                <ul>
+                    <?php foreach ($msgNotification as $mn) {    ?>
+                        <li>
+                            <div class="user-thumbnail">
+                                <img src="<?php echo $img = (!empty($mn['profile_image'])) ? base_url()."assets/images/profile_images/".$mn['profile_image'] : base_url()."assets/images/profile_images/dummy-img.png" ?>" alt="" title="" >
+                            </div>
+                            <div class="msg-body"><a href="<?php echo base_url('Pm/thread?i='.$mn['privmsg_author']); ?>"><?php echo substr($mn['privmsg_body'],0,20); ?></a></div>
+                        </li>
+                    <?php } ?>
+                    <li>
+                        <a href="<?php echo base_url('Pm'); ?>" >All Messages</a>
+                    </li>
+                </ul>
+            </div>
+            <?php
+        }
+        else {
+            ?>
+            <div class="msg-notification-detail no-notification">
+                <ul>
+                    <li>No notifications</li>
+                    <li>
+                        <a href="<?php echo base_url('Pm'); ?>" >All Messages</a>
+                    </li>
+                </ul>
+            </div>
+        <?php } ?>
         <!--end TAG notifications-->
         <div class="user-action">
             <a href="javascript:void(0)"><img src="<?php echo base_url(); ?>assets/images/users-icon.png" class="tagNotification" alt="" title="You are tagged by">
                 <?php if ($notifications) { ?>
                     <span></span>
-        <?php } ?>
+                <?php } ?>
             </a>
-            <a href="<?php echo base_url('pm'); ?>"><img src="<?php echo base_url(); ?>assets/images/message-icon.png" alt="" title=""></a>
+            <a href="javascript:void(0)" class="msg-notification"><img src="<?php echo base_url(); ?>assets/images/message-icon.png" alt="" title="">
+            <?php if ($msgNotification) { ?>
+                    <span></span>
+                <?php } ?>
+            </a>
             <a href="javascript:void(0)" class="settings"><img src="<?php echo base_url(); ?>assets/images/setting-icon.png" alt="" title=""></a>
             <a href="javascript:void(0)" class="notification">
                 <img src="<?php echo base_url(); ?>assets/images/notification-icon.png" alt="" title="">
                 <?php if ($tagNotification || $tagCommentsNotification) { ?>
                     <span></span>
-        <?php } ?>
+                <?php } ?>
             </a>
         </div>
         <?php

@@ -17,6 +17,53 @@ class Profile extends CI_Controller {
         render_view('profile.php');
     }
 
+    public function user_profile() {
+
+        $curUser = currentuser_session();
+
+        $model = model_load_model('profile_model');
+        $data['states'] = $model->getStates();
+        $basicModel = load_basic_model('profile');
+        $data['assesmentData'] = $basicModel->get(array('user_id' => $curUser['user_id']), 1);
+
+        $data['userData'] = $model->getUserInfo($curUser['user_id']);
+
+        render_view('profile', $data);
+    }
+
+    public function timeline() {
+
+        $curUser = currentuser_session();
+//        if someone else profile
+        if ($this->input->get('id')) {
+//        if (1 == 1) {
+//        $userId = '20';
+            $userId = $this->input->get('id');
+//            relation to current user
+            $userModel = model_load_model('User_model');
+            $relation = $userModel->check_relation($curUser['user_id'], $userId);
+            $data['relation'] = $relation['confirm'];
+        }
+        else {
+
+            $userId = $curUser['user_id'];
+        }
+
+
+        $model = model_load_model('profile_model');
+        $data['states'] = $model->getStates();
+        $basicModel = load_basic_model('profile');
+
+        //POSTS
+        $postsModel = model_load_model('Posts_model');
+        $data['posts'] = $postsModel->getPosts($userId);
+
+        $data['userData'] = $model->getUserInfo($userId);
+
+        $data['curUserData'] = $model->getUserInfo($curUser['user_id']);
+        render_view('timeline.php', $data);
+    }
+
     public function activate_deactivate_account() {
 
         $userId = $this->input->get('id');
@@ -208,9 +255,9 @@ class Profile extends CI_Controller {
 //        PROFILE IMAGE
 
         if (isset($_POST['profilesrc']) && $_POST['profilesrc'] != "" && isset($_POST['x']) && $_POST['x'] != "" && isset($_POST['y']) && isset($_POST['w']) && isset($_POST['h'])) {
-            
+
             $previousProfileImage = ROOT_PATH.'/assets/images/profile_images/'.$userData['profile_image'];
-            
+
             $targ_w = $targ_h = 180;
             $jpeg_quality = 90;
 
@@ -233,14 +280,13 @@ class Profile extends CI_Controller {
                 unlink($src);
                 unlink($previousProfileImage);
                 $posts['profile_image'] = $actual_image_name1;
-
             }
         }
         unset($posts['x'], $posts['y'], $posts['w'], $posts['h'], $posts['profilesrc'], $posts['user']);
 //        END PROFILE IMAGE
 //        print_r($posts);
 //        exit;
-        
+
         if (!empty($userData)) {
             $updateResult = $model->update($posts, array('user_id' => $curUser['user_id']));
             $error = $this->db->error();
@@ -443,6 +489,7 @@ class Profile extends CI_Controller {
         ));
         die();
     }
+
 //
     public function save_profile_image() {
 
@@ -510,140 +557,123 @@ class Profile extends CI_Controller {
         exit;
     }
 
-	public function setting(){
-		$this->load->library('form_validation');
-		$this->form_validation->set_rules('old_password','old password','callback_check_validation');
-		
-		if($this->form_validation->run()==false)
-		{
-		$data['assesment'] = $this->session->userdata('assesment');
-		render_view('setting', $data);
-		}else{
-			
-			
-			if($this->input->post('new_password')!=''){
-				$data['password']	=	md5($this->input->post('new_password'));
-}
-			if($this->input->post('user_status')!=''){
+    public function setting() {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('old_password', 'old password', 'callback_check_validation');
 
-				$data['user_status']	=	$this->input->post('user_status');
-				
-			}
-			$curUser = currentuser_session();
-			$this->Profile_model->common_update('users','user_id',$curUser['user_id'],$data);
-			$this->session->set_userdata('sessionMessage','successfully updated the profile');
-			redirect(base_url('Profile/setting'));
-			
-			
-		}
-		
-	}
-	
-	function check_validation(){
-		$this->load->library('form_validation');
-		$old_password	=	md5($this->input->post('old_password'));
-		$new_password	=	$this->input->post('new_password');
-		$con_password	=	$this->input->post('con_password');
-		$curUser = currentuser_session();
+        if ($this->form_validation->run() == false) {
+            $data['assesment'] = $this->session->userdata('assesment');
+            render_view('setting', $data);
+        }
+        else {
 
-		$check			=	$this->Profile_model->select_where('user_id','users',array('user_id'=>$curUser['user_id'],'password'=>$old_password))->num_rows();
-		if($con_password == '' && $new_password=='' && $old_password==''){
-		return TRUE;
-		}else if($con_password!=$new_password){
-		
-        $this->form_validation->set_message('check_validation', 'New and Confirm password are not match');
-        return FALSE;
-		}else if($check==0 && $con_password != '' && $new_password!='' && $old_password!=''){
-		
-        $this->form_validation->set_message('check_validation', 'You have enter incorrect old password');
-        return FALSE;
-		}else{
-		return TRUE;	
-		}
 
-		
-		
-	}
-	
-	function edit_banner(){
-		
-			 	$curUser = currentuser_session();
-				if (!empty($_FILES['banner_pic']['name']))	
-				{
-			   
-			    $current_banner	=	$this->Profile_model->get_signle_value(array('user_id'=>$curUser['user_id']),'profile_banner','profile');
-				$whitelist = array('jpg', 'jpeg', 'png');
-                $tmp_name = $_FILES['banner_pic']['tmp_name'];
-                $orignal_name = explode('.', $_FILES['banner_pic']['name']);
-                $ext = $orignal_name[count($orignal_name) - 1];
-				$randam_name	=	time().'-'.rand(100, 10000).'.'.$ext;
-                $name = ROOT_PATH.'/assets/images/banner_images/'.$randam_name;
-                $error = $_FILES['banner_pic']['error'];
-				
-				
-				
-				
-                if ($error === UPLOAD_ERR_OK) {
-                    $extension = pathinfo($name, PATHINFO_EXTENSION);
-                    if (!in_array($extension, $whitelist)) {
-                        $error = 'Invalid file type uploaded.';
-						
-						$resut = array('msg' =>'error','error'=>'Invalid File');
-       					echo json_encode($resut);
-        				exit;
+            if ($this->input->post('new_password') != '') {
+                $data['password'] = md5($this->input->post('new_password'));
+            }
+            if ($this->input->post('user_status') != '') {
+
+                $data['user_status'] = $this->input->post('user_status');
+            }
+            $curUser = currentuser_session();
+            $this->Profile_model->common_update('users', 'user_id', $curUser['user_id'], $data);
+            $this->session->set_userdata('sessionMessage', 'successfully updated the profile');
+            redirect(base_url('Profile/setting'));
+        }
+    }
+
+    function check_validation() {
+        $this->load->library('form_validation');
+        $old_password = md5($this->input->post('old_password'));
+        $new_password = $this->input->post('new_password');
+        $con_password = $this->input->post('con_password');
+        $curUser = currentuser_session();
+
+        $check = $this->Profile_model->select_where('user_id', 'users', array('user_id' => $curUser['user_id'], 'password' => $old_password))->num_rows();
+        if ($con_password == '' && $new_password == '' && $old_password == '') {
+            return TRUE;
+        }
+        else if ($con_password != $new_password) {
+
+            $this->form_validation->set_message('check_validation', 'New and Confirm password are not match');
+            return FALSE;
+        }
+        else if ($check == 0 && $con_password != '' && $new_password != '' && $old_password != '') {
+
+            $this->form_validation->set_message('check_validation', 'You have enter incorrect old password');
+            return FALSE;
+        }
+        else {
+            return TRUE;
+        }
+    }
+
+    function edit_banner() {
+
+        $curUser = currentuser_session();
+        if (!empty($_FILES['banner_pic']['name'])) {
+
+            $current_banner = $this->Profile_model->get_signle_value(array('user_id' => $curUser['user_id']), 'profile_banner', 'profile');
+            $whitelist = array('jpg', 'jpeg', 'png');
+            $tmp_name = $_FILES['banner_pic']['tmp_name'];
+            $orignal_name = explode('.', $_FILES['banner_pic']['name']);
+            $ext = $orignal_name[count($orignal_name) - 1];
+            $randam_name = time().'-'.rand(100, 10000).'.'.$ext;
+            $name = ROOT_PATH.'/assets/images/banner_images/'.$randam_name;
+            $error = $_FILES['banner_pic']['error'];
+
+
+
+
+            if ($error === UPLOAD_ERR_OK) {
+                $extension = pathinfo($name, PATHINFO_EXTENSION);
+                if (!in_array($extension, $whitelist)) {
+                    $error = 'Invalid file type uploaded.';
+
+                    $resut = array('msg' => 'error', 'error' => 'Invalid File');
+                    echo json_encode($resut);
+                    exit;
+                }
+                else {
+                    $image_info = getimagesize($_FILES["banner_pic"]["tmp_name"]);
+                    $image_width = $image_info[0];
+                    $image_height = $image_info[1];
+
+                    if ($image_width < 820 || $image_height < 355) {
+
+
+                        $resut = array('msg' => 'error', 'error' => 'File size must be greater than 820*355 dimension');
+                        echo json_encode($resut);
+                        exit;
                     }
                     else {
-						$image_info = getimagesize($_FILES["banner_pic"]["tmp_name"]);
-						$image_width = $image_info[0];
-						$image_height = $image_info[1];
-				
-						if($image_width<820 || $image_height<355){
-							
-					
-						$resut = array('msg' =>'error','error'=>'File size must be greater than 820*355 dimension');
-       					echo json_encode($resut);
-        				exit;
-							
-						}else{
-							
-						if(move_uploaded_file($tmp_name, $name)){
-						if($current_banner!=''){
-							
-						if(file_exists(ROOT_PATH.'/assets/images/banner_images/'.$current_banner)){
-						unlink(ROOT_PATH.'/assets/images/banner_images/'.$current_banner);
-						}
-						$data['profile_banner']	=	$randam_name;
-						$data['profile_desc']	=	$this->input->post('profile_desc');
-						$this->Profile_model->common_update('profile','user_id',$curUser['user_id'],$data);
-						$resut = array('msg' =>'success','path'=>'assets/images/banner_images/'.$randam_name);
-       					echo json_encode($resut);
-        				exit;
-						 
-						
-							}
-							
-						}
-							
-						}
-						
-						
-						
-                        
-       
+
+                        if (move_uploaded_file($tmp_name, $name)) {
+                            if ($current_banner != '') {
+
+                                if (file_exists(ROOT_PATH.'/assets/images/banner_images/'.$current_banner)) {
+                                    unlink(ROOT_PATH.'/assets/images/banner_images/'.$current_banner);
+                                }
+                                $data['profile_banner'] = $randam_name;
+                                $data['profile_desc'] = $this->input->post('profile_desc');
+                                $this->Profile_model->common_update('profile', 'user_id', $curUser['user_id'], $data);
+                                $resut = array('msg' => 'success', 'path' => 'assets/images/banner_images/'.$randam_name);
+                                echo json_encode($resut);
+                                exit;
+                            }
+                        }
                     }
                 }
-				}else{
-						$data['profile_desc']	=	$this->input->post('profile_desc');
-						$this->Profile_model->common_update('profile','user_id',$curUser['user_id'],$data);	
-						$resut = array('msg' =>'success','path'=>'empty');
-       					echo json_encode($resut);
-        				exit;
-					
-				}
-            
-		
-	
-	}
+            }
+        }
+        else {
+            $data['profile_desc'] = $this->input->post('profile_desc');
+            $this->Profile_model->common_update('profile', 'user_id', $curUser['user_id'], $data);
+            $resut = array('msg' => 'success', 'path' => 'empty');
+            echo json_encode($resut);
+            exit;
+        }
+    }
 
 }
 

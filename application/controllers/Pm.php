@@ -134,8 +134,14 @@ class Pm extends CI_Controller {
 //        print_r($senders);exit;
 //        echo $this->db->last_query();exit;
         $data['senders'] = array();
+        $users = array();
         $curUser = currentuser_session();
         foreach ($senders as $i => $sender) {
+            if (in_array($sender['pmto_recipient'], $users) || in_array($sender['privmsg_author'], $users)) {
+                continue;
+            }
+            $users[] = $sender['pmto_recipient'];
+            $users[] = $sender['privmsg_author'];
             $reciever = $sender['pmto_recipient'];
             if ($sender['pmto_recipient'] == $curUser['user_id']) {
                 $reciever = $sender['privmsg_author'];
@@ -201,7 +207,20 @@ class Pm extends CI_Controller {
         $curUser = currentuser_session();
         $data['reciever'] = $senderId;
         $data['messages'] = $this->user_model->get_thread($curUser['user_id'], $senderId);
-//        print_r($messages);exit;
+//        check if last message by current user then don't mark as read
+        $lastMsgAuthor = end($data['messages'])['privmsg_author'];
+
+        if ($lastMsgAuthor != $curUser['user_id']) {
+            $msgIds = '';
+            foreach ($data['messages'] as $r) {
+                $msgIds .= $r['privmsg_id'].',';
+            }
+            $msgIds = trim($msgIds, ',');
+            $this->db->where_in('pmto_message', $msgIds, FALSE);
+            $this->db->update('privmsgs_to', array('pmto_read' => 1));
+        }
+//        echo $this->db->last_query();
+//        exit;
 
 
         render_view('messages/thread', $data);
@@ -252,7 +271,7 @@ class Pm extends CI_Controller {
             exit;
         }
         else {
-             $result = array('msg' => 0);
+            $result = array('msg' => 0);
             echo json_encode($result);
             exit;
         }

@@ -12,7 +12,7 @@ if (array_filter($curUser)) {
     if (isset($profileInfo['profile_image'])) {
         ?>
         <!---profile popup--->
-        <div class="popup-box hidden">
+        <div class="popup-box">
             <div id="bioModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -36,8 +36,7 @@ if (array_filter($curUser)) {
         <!---popup_End--->
 
     <?php }
-}
-?>
+} ?>
 <!--Footer-->
 <div id="awan"></div>
 
@@ -48,9 +47,9 @@ if (array_filter($curUser)) {
 <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 <script src="<?php echo base_url(); ?>assets/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
 <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="<?php echo base_url(); ?>assets/js/load-image.all.min.js"></script>
+<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
 <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="<?php echo base_url(); ?>assets/js/canvas-to-blob.min.js"></script>
+<script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
 <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
 <script src="<?php echo base_url(); ?>assets/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
 <!-- The basic File Upload plugin -->
@@ -65,19 +64,8 @@ if (array_filter($curUser)) {
 <script src="<?php echo base_url(); ?>assets/jQuery-File-Upload/js/jquery.fileupload-video.js"></script>
 <!-- The File Upload validation plugin -->
 <script src="<?php echo base_url(); ?>assets/jQuery-File-Upload/js/jquery.fileupload-validate.js"></script>
-<!--<script src="<?php echo base_url(); ?>assets/js/header.js"></script>-->
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- jQuery (necessary for JavaScript plugins) -->
-<script src="<?php echo base_url(); ?>assets/jquery/js/jquery-2.2.4.js"></script>
-<!-- Custom scripts -->
-<script src="<?php echo base_url(); ?>assets/jquery/js/jquery-ui-1.12.1.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/scripts.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/header.js"></script>
+
+
 </body>
-
 </html>
-

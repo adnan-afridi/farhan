@@ -25,8 +25,9 @@ class Login extends CI_Controller {
         $currentUser = $CI->session->userdata("currentUser");
         $currentUser['loggedIn'] = $CI->session->userdata("loggedIn");
         if ($currentUser['loggedIn'] == TRUE) {
-            redirect(base_url('Main'));
-        } else {
+            redirect(base_url('Profile/timeline'));
+        }
+        else {
             return TRUE;
         }
     }
@@ -38,7 +39,7 @@ class Login extends CI_Controller {
         $data['user_email'] = '';
         $data['password'] = '';
         $data['passconf'] = '';
-        render_view('login', $data);
+        render_view('login', $data, $header = array('loginPage' => TRUE));
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 $url = $this->uri->segment_array();
 $curUrl = end($url);
-$activate_link = 'class="current"';
+$activate_link = 'class="active"';
 
 //profile image
 $CI = get_instance();
@@ -18,42 +18,47 @@ $userData = $model->get(array('user_id' => $userId), 1);
 //$tagNotification = $model->get_tag_notifications();
 //$tagCommentsNotification = $model->get_comments_tag_notifications();
 ?>
-<div class="left-side-bar">
-    <div class="logo">
-        <a href="index.html"><img src="<?php echo base_url(); ?>assets/images/logo.png" alt="" title=""></a>
-    </div>
-    <div class="user-info">
-        <div class="img"><img src="<?php echo $img = (!empty($userData['profile_image'])) ? base_url()."assets/images/profile_images/".$userData['profile_image'] : base_url()."assets/images/profile_images/dummy-img.png" ?>" alt="" title=""></div>
-        <div class="name"><?php echo $curUser['first_name'].' '.$curUser['last_name']; ?></div>
-    </div>
-    <nav>
-        <ul>
-            <li <?php echo ($curUrl == "timeline") ? $activate_link : ""; ?>>
-                <a  href="<?php echo base_url('Profile/timeline'); ?>">
-                    <div class="icon"><img src="<?php echo base_url(); ?>assets/images/clock-icon.png"></div>
-                    Time Line
-                </a>
-            </li>
-            <li <?php echo ($curUrl == "user_profile") ? $activate_link : ""; ?>>
-                <a href="<?php echo base_url('Profile/user_profile'); ?>">
-                    <div class="icon"><img src="<?php echo base_url(); ?>assets/images/profile-icon.png"></div>
-                    Profile
-                </a>
-            </li>
-            <li <?php echo ($curUrl == "get_connected") ? $activate_link : ""; ?>>
-                <a href="<?php echo base_url('Main/get_connected'); ?>">
-                    <div class="icon"><img src="<?php echo base_url(); ?>assets/images/connected-icon.png"></div>
-                    Get Connected
-                </a>
-            </li>
-            <li <?php echo ($curUrl == "inspiration_board") ? $activate_link : ""; ?>>
-                <a href="<?php echo base_url('Main/inspiration_board'); ?>">
-                    <div class="icon"><img src="<?php echo base_url(); ?>assets/images/board-icon.png"></div>
-                    Inspiration Board
-                </a>
-            </li>
-        </ul>
-    </nav>
+<div class="col-md-3 col-sm-4 left-side-menu">
+
+    <div class="row">
+        <div class="side-menu">
+            <div class="search">
+                <form method="post" action="<?php echo base_url('Users/search_users'); ?>">
+                    <input type="search" name="search" class="search-user" id="left_search" placeholder="Search..." style="margin-bottom: 0px;">
+                    <input type="submit" id="search-btn">
+                </form>
+            </div>
+            <ul class="nav-menu">
+                <li><img id="menu-profile-image" src="<?php echo $img = (!empty($userData['profile_image'])) ? base_url()."assets/images/profile_images/".$userData['profile_image'] : base_url()."assets/images/profile_images/dummy-img.png" ?>"</li>
+                <li><a <?php echo ($curUrl == "Profile") ? $activate_link : ""; ?> href="<?php echo base_url('Main'); ?>">Timeline</a></li>
+                <li><a  href="#" id="bio-popup">Bio</a></li>
+                <li><a <?php echo ($curUrl == "assesment") ? $activate_link : ""; ?> href="<?php echo base_url('Profile/assesment'); ?>">Assesment</a></li>
+                <!--<li><a <?php // echo ($curUrl == "my_reell") ? $activate_link : "";        ?> href="<?php // echo base_url('Profile/my_reell');        ?>">My Reell</a></li>-->
+                <li><a <?php echo ($curUrl == "get_connected") ? $activate_link : ""; ?> href="<?php echo base_url('Main/get_connected'); ?>">Get Connected</a></li>
+                <li><a <?php echo ($curUrl == "inspiration_board") ? $activate_link : ""; ?> href="<?php echo base_url('Main/inspiration_board'); ?>">Inspiration Board</a></li>
+            </ul>
+
+
+            <!--notification-->
+
+            <!--end notification-->
+
+            <!--SETTINGS-->
+            <div class="settings-menu">
+                <ul>
+                    <li>
+                        <a href="<?php echo base_url('Profile/activate_deactivate_account'); ?>">Deactivate</a>
+                    </li>
+                    <li><a  href="<?php echo base_url('Logout'); ?>">Logout</a></li>
+
+                </ul>
+            </div>
+            <!--END SETTINGS-->
+            <span class="left-side-notifications">
+                <?php // base_url('Main/left_menu_notifications'); ?>	
+            </span>
+        </div>
+    </div> 
 </div>
 
 
@@ -63,10 +68,10 @@ $userData = $model->get(array('user_id' => $userId), 1);
 //        refresh left menu
 
 
-//        loadlink(); // This will run on page load
-//        setInterval(function () {
-//            loadlink() // this will run after every 5 seconds
-//        }, 10000);
+        loadlink(); // This will run on page load
+        setInterval(function () {
+            loadlink() // this will run after every 5 seconds
+        }, 10000);
 
 //        confirm request
 
@@ -150,10 +155,10 @@ $userData = $model->get(array('user_id' => $userId), 1);
                     var val = ui.item.value;
                     window.location.href = window.base_url + "Users/find_profile?id=" + val;
                 }
-            }).autocomplete("instance")._renderItem = function (ul, item) {
+            }).autocomplete( "instance" )._renderItem = function (ul, item) {
                 return $("<li></li>")
                         .data("item.autocomplete", item)
-                        .append("<img width='40px' src='" + window.base_url + 'assets/<?php echo base_url(); ?>assets/images/profile_<?php echo base_url(); ?>assets/images/' + item.image + "' />&nbsp;<a>" + item.value + "</a>")
+                        .append("<img width='40px' src='" +window.base_url+'assets/images/profile_images/'+ item.image + "' />&nbsp;<a>" + item.value + "</a>")
                         .appendTo(ul);
             };
 //            }
@@ -161,66 +166,64 @@ $userData = $model->get(array('user_id' => $userId), 1);
 
 
     });
-//    function loadlink() {
-//
-////        console.log('left menu reloaded');
-//        $('.left-side-notifications').load(window.base_url + 'Main/left_menu_notifications').fadeIn("slow");
-//    }
+    function loadlink() {
+
+//        console.log('left menu reloaded');
+        $('.left-side-notifications').load(window.base_url + 'Main/left_menu_notifications').fadeIn("slow");
+    }
 
     //BIO POPUP
-
+	
     $(document).on('click', '#bio-popup', function (e) {
-
+		
         e.preventDefault();
         $('#bioModal').modal('show');
     })
-
-    //BIO POPUP
-
+	
+	//BIO POPUP
+	
     $(document).on('click', '#edit-banner', function (e) {
-
+		
         e.preventDefault();
         $('#bannerModal').modal('show');
     })
-
-    $(document).ready(function (e) {
-
-        $('.openImgUpload').click(function () {
-            $('#imgsupload').trigger('click');
-        });
-
-
-        $("#uploadForm").on('submit', (function (e) {
-
-            var formData = new FormData(this);
-            e.preventDefault();
-            $.ajax({
-                url: window.base_url + 'Profile/edit_banner',
-                type: "POST",
-                data: formData,
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function (data)
-                {
-                    obj = JSON.parse(data);
-                    $("#error-msg").empty();
-                    if (obj.msg == 'success' && obj.path != 'empty') {
-                        $("#change_section").html('<img src="' + obj.path + '" alt="" title="" width="100%" height="90%">');
-                        $("#error-msg").html("<span style='color:red;'>successfully updated</p>");
-                    } else if (obj.msg == 'success' && obj.path == 'empty') {
-                        $("#error-msg").html("<span style='color:red;'>successfully updated</p>");
-                    } else {
-                        $("#error-msg").html("<span style='color:red;'>" + obj.error + "</p>");
-                    }
-                },
-                error: function ()
-                {
-                }
-            });
-        }));
-    });
-
+	
+	$(document).ready(function (e) {
+		
+	$('.openImgUpload').click(function(){ $('#imgsupload').trigger('click'); });
+		
+		
+	$("#uploadForm").on('submit',(function(e) {
+			
+		var formData = new FormData(this);
+		e.preventDefault();
+		$.ajax({
+        	url: window.base_url + 'Profile/edit_banner',
+			type: "POST",
+			data:  formData,
+			contentType: false,
+    	    cache: false,
+			processData:false,
+			success: function(data)
+		    {
+				obj = JSON.parse(data);
+				$( "#error-msg" ).empty();
+				if(obj.msg=='success' && obj.path!='empty'){
+				$("#change_section").html('<img src="'+obj.path+'" alt="" title="" width="100%" height="90%">');
+				$( "#error-msg" ).html("<span style='color:red;'>successfully updated</p>");		
+				}else if(obj.msg=='success' && obj.path=='empty'){
+				$( "#error-msg" ).html("<span style='color:red;'>successfully updated</p>");
+				}else{
+				$( "#error-msg" ).html("<span style='color:red;'>"+obj.error+"</p>");
+			}
+		    },
+		  	error: function() 
+	    	{
+	    	} 	        
+	   });
+	}));
+});
+	
 </script>
 <style>
 
@@ -262,7 +265,7 @@ $userData = $model->get(array('user_id' => $userId), 1);
 
     .ui-menu-item > a:hover,.ui-menu-item > img:hover{
         color: #ffffff;
-
+       
     }
 
 </style>

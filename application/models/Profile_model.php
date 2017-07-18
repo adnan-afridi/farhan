@@ -6,9 +6,11 @@ if (!defined('BASEPATH'))
 class Profile_model extends CI_Model {
 
     public function getUserInfo($user_id = '') {
-        $this->db->select('*');
+        $this->db->select('u.*,p.*,s.name as state, c.name as city');
         $this->db->from('users u');
         $this->db->join('profile p','p.user_id = u.user_id','LEFT');
+        $this->db->join('states s','s.id = p.state','LEFT');
+        $this->db->join('cities c','c.id = p.city','LEFT');
         $this->db->where('u.user_id',$user_id);
         $result = $this->db->get()->result_array();
 //        echo $this->db->last_query();exit;
