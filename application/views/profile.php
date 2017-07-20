@@ -36,11 +36,24 @@ $curUser = currentuser_session();
                                         </div>
 										<h2><?php echo $userData['first_name']; ?> <?php echo $userData['last_name']; ?></h2>
                                         
-                                        <?php if($userData['user_id']!=$curUser['user_id'] && $relation !=1){?>
+                                        <?php if($userData['user_id']!=$curUser['user_id']){?>
                                         
-                                        		
+                                        	 <?php if ($relation == '1') { ?>
+                                                    <a href="javascript:void(0)" user="<?php echo $userData['user_id']; ?>" class="add-friend un-friend" >Unfriend</a>
+                                                    <?php
+                                                }
+                                                else if ($relation == '0') {
+                                                    ?>
+                                                    <a href="javascript:void(0)" user="<?php echo $userData['user_id']; ?>" class="add-friend un-friend">Cancel Request</a>
+                                                    <?php
+                                                }
+                                                else {
+                                                    ?>
+                                                    <a href="javascript:void(0)" user="<?php echo $userData['user_id']; ?>" class="add-friend connect-to">Add Friend</a>
+                                                    
+                                                    
+                                                <?php } ?>	
                                                 
-											<a href="#" class="add-friend">Add Friend</a>
                                             
                                          <?php }?>
 									</div>
