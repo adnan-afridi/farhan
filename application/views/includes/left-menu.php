@@ -63,10 +63,10 @@ $userData = $model->get(array('user_id' => $userId), 1);
 //        refresh left menu
 
 
-//        loadlink(); // This will run on page load
-//        setInterval(function () {
-//            loadlink() // this will run after every 5 seconds
-//        }, 10000);
+        loadlink(); // This will run on page load
+       setInterval(function () {
+         loadlink() // this will run after every 5 seconds
+       }, 10000);
 
 //        confirm request
 
@@ -139,7 +139,8 @@ $userData = $model->get(array('user_id' => $userId), 1);
 //                                console.log(item.value);
                                 return {
                                     value: item.value,
-                                    image: item.image
+                                    image: item.image,
+									id: item.id
                                 };
                             }))
                         }
@@ -147,13 +148,13 @@ $userData = $model->get(array('user_id' => $userId), 1);
                 },
                 minLength: 2,
                 select: function (event, ui) {
-                    var val = ui.item.value;
-                    window.location.href = window.base_url + "Users/find_profile?id=" + val;
+                    var val = ui.item.id;
+                    window.location.href = window.base_url + "profile/user_profile/"+ val;
                 }
             }).autocomplete("instance")._renderItem = function (ul, item) {
                 return $("<li></li>")
                         .data("item.autocomplete", item)
-                        .append("<img width='40px' src='" + window.base_url + 'assets/<?php echo base_url(); ?>assets/images/profile_<?php echo base_url(); ?>assets/images/' + item.image + "' />&nbsp;<a>" + item.value + "</a>")
+                        .append("<img width='40px' src='"+item.image+"' />&nbsp;<a>" + item.value + "</a>")
                         .appendTo(ul);
             };
 //            }
@@ -161,11 +162,11 @@ $userData = $model->get(array('user_id' => $userId), 1);
 
 
     });
-//    function loadlink() {
+    function loadlink() {
 //
-////        console.log('left menu reloaded');
-//        $('.left-side-notifications').load(window.base_url + 'Main/left_menu_notifications').fadeIn("slow");
-//    }
+        console.log('left menu reloaded');
+       $('.left-side-notifications').load(window.base_url + 'Main/left_menu_notifications').fadeIn("slow");
+   }
 
     //BIO POPUP
 

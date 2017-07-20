@@ -101,31 +101,43 @@ $error = $CI->session->flashdata('error');
                     <!--end left menu-->
                     <div class="right-cont-box">
 <?php if ($loggedIn) { ?>
-                            <div class="header-cont">
-                                <a class="navbar-minimalize btn btn-primary" href="#"><i class="fa fa-bars"></i> </a>
-                                <div class="right-cont">
-                                    <ul>
-                                        <li>
-                                            <a href="#"><img src="<?php echo base_url(); ?>assets/images/user-icon.png" alt="" title="">
-                                                <span>10</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="<?php echo base_url(); ?>assets/images/bell-icon.png" alt="" title="">
-                                                <span>10</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="<?php echo base_url(); ?>assets/images/mail-icon.png" alt="" title="">
-                                                <span>10</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <form method="post" action="<?php echo base_url('Users/search_users'); ?>">
+
+						<div class="header-cont">
+                        <a class="navbar-minimalize" href="#"><i class="fa fa-bars"></i> </a>
+                        <div class="right-cont">
+                            <ul class="left-side-notifications">
+                                <li>
+                                    <div class="dropdown">
+                                        <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/user-icon.png" alt="" title=""></a>
+                                     
+                                    </div>
+                                </li>
+                                <li>
+                                	<div class="dropdown">
+                                    <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/bell-icon.png" alt="" title=""></a>
+                                  
+                                    </div>
+                                </li>
+                                <li>
+                                <div class="dropdown">
+                                    <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/mail-icon.png" alt="" title=""></a>
+                                    
+                                    </div>
+                                </li>
+                                <li class="logout">
+                                    <a href="<?php echo base_url()?>logout">
+									Log Out</a>
+                                </li>
+                            </ul>
+                        </div>
+                       <form method="post" action="<?php echo base_url('Users/search_users'); ?>">
                                     <input type="search" class="search-user" id="left_search" placeholder="Search..." />
                                 </form>
-                            </div>
+                    	</div>
+
+
+
+                            
 <?php } ?>
                         <div class="inner-content">
                             <div class="center-content">

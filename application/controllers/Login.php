@@ -39,6 +39,7 @@ class Login extends CI_Controller {
         $data['user_email'] = '';
         $data['password'] = '';
         $data['passconf'] = '';
+		$data['check_login'] = 1;
         render_view('login', $data, $header = array('loginPage' => TRUE));
     }
 

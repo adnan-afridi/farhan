@@ -104,7 +104,12 @@ $curUser = currentuser_session();
                                     <div class="reply-cont">
                                         <div class="avatar-small"><img src="<?php echo base_url() ?>assets/images/profile_images/<?php echo $curUserData['profile_image']; ?>" alt="" title=""></div>
                                         <div class="reply-field">
-                                            <input name="" type="text" value="write reply">
+                                        <div class="row comments-box">
+
+        								<?php echo $comments = get_post_comments($post['post_id'], 0); ?>
+                                        </div>
+                                        
+                                            <input name="" type="text" value="<?php echo $post['post_id']?>">
                                         </div>
                                     </div>
                                 </div>
@@ -259,5 +264,19 @@ $curUser = currentuser_session();
         $('#w').val(c.w);
         $('#h').val(c.h);
     }
+	
+	$('.comment-reply').on('click', function (e) {
+
+            $('.comment-box').parent('div').remove();
+            var post = $(this).parents('.post-courage').find('input[name="post-id"]').val();
+            var parent = $(this).closest('.comment-row').attr('id');
+            var commentBox = '<div class="row"><form method="post" class="comment-form form-horizontal col-sm-6 comment-box" action="">';
+            commentBox += '<input type="text" name="comment" id="comment" class="form-control" placeholder="Your comment"/>';
+            commentBox += '<input type="hidden" name="postId" value="' + post + '" class="form-control"/>';
+            commentBox += '<input type="hidden" name="parent" value="' + parent + '" class="form-control"/>';
+            commentBox += '</form></div>';
+            $(commentBox).insertAfter($(this).closest('.comment-row'));
+            $('input[name="comment"]').focus();
+        });
 
 </script>

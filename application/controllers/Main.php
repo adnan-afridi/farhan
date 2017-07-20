@@ -244,6 +244,8 @@ class Main extends CI_Controller {
 //TAGING
         $tagNotification = $model->get_tag_notifications();
         $tagCommentsNotification = $model->get_comments_tag_notifications();
+		
+		$tag_total	=	count($tagNotification)+count($tagCommentsNotification);
 
 //MESSAGES
         $pmModel = model_load_model('Pm_model');
@@ -251,7 +253,101 @@ class Main extends CI_Controller {
 //echo $this->db->last_query();exit;
 //        print_r($msgNotification);
 //        exit;
+?>
 
+							
+                                <li>
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/user-icon.png" alt="" title=""><?php if(count($notifications)>0){?><span><?php echo count($notifications);?></span> <?php }?></a>
+                                        
+                                        <?php if ($notifications) {?>
+                                        <ul class="dropdown-menu">
+                                        	<?php foreach ($notifications as $n) { ?>
+                                            <li>
+                                                <div class="user-thumbnail">
+                                                    <a href="<?php echo base_url()?>profile/user_profile/<?php echo $n['user_id']?>"><img  width="28px" height="28px" src="<?php echo $img = (!empty($n['profile_image'])) ? base_url()."assets/images/profile_images/".$n['profile_image'] : base_url()."assets/images/profile_images/dummy-img.png" ?>" alt="" title="" ></a>
+                                                </div>
+                                                <div class="user-detail">
+                                                    <a href="<?php echo base_url()?>profile/user_profile/<?php echo $n['user_id']?>" class="username"><?php echo $n['first_name'].'&nbsp;'.$n['last_name']; ?></a>
+                                                    <ul>
+                                                        <li><a href="javascript:void(0)" class="reply-request" con="<?php echo $n['ID']; ?>" action="confirm">Confirm</a></li>
+                                                        <li><a href="javascript:void(0)" class="reply-request" con="<?php echo $n['ID']; ?>" action="reject">Cancel Request</a></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        <?php } ?> 
+                                       
+                                        </ul>
+                                        
+                                        <?php }else{?>
+                                         <ul class="dropdown-menu">
+                                          <li>No Pending Request</li>
+                                         </ul>
+                                         <?php }?>
+                                        
+                                    </div>
+                                </li>
+                                <li>
+                                	<div class="dropdown">
+                                    <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/bell-icon.png" alt="" title=""><?php if($tag_total>0){?><span><?php echo $tag_total?></span> <?php }?></a>
+                                    <?php if ($tagNotification || $tagCommentsNotification) { ?>
+                                    <ul class="dropdown-menu">
+                                    
+                                    		<?php foreach ($tagNotification as $tn) { ?>
+                                            <li>
+                                                <a href="<?php echo base_url('Posts/view_post?id='.$tn['post_id']); ?>"><?php echo $tn['title']; ?></a>
+                                            </li>
+                                            <?php
+                                       		 }
+											 foreach ($tagCommentsNotification as $tcn) {
+											?>
+											<li>
+												<a href="<?php echo base_url('Posts/view_post?id='.$tcn['post_id']); ?>"><?php echo substr($tcn['comment_body'], 0, 50); ?></a>
+											</li>
+										<?php } ?>
+                                    
+                             
+                                    </ul>
+                                    <?php }else{?>
+                                    <ul class="dropdown-menu">
+                                     <li>No Notifications</li>
+                                    </ul>
+                                    
+                                    <?php }?>
+                                    </div>
+                                </li>
+                                <li>
+                                <div class="dropdown">
+                                    <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/mail-icon.png" alt="" title=""><?php if(count($msgNotification)>0){?><span><?php echo count($msgNotification)?></span><?php }?></a>
+                                     <?php if ($msgNotification) { ?>
+                                    <ul class="dropdown-menu">
+                                     <?php foreach ($msgNotification as $mn) {    ?>
+                                        <li>
+                                            <div class="user-thumbnail">
+                                                <img src="<?php echo $img = (!empty($mn['profile_image'])) ? base_url()."assets/images/profile_images/".$mn['profile_image'] : base_url()."assets/images/profile_images/dummy-img.png" ?>" alt="" title="" >
+                                            </div>
+                                            <div class="msg-body"><a href="<?php echo base_url('Pm/thread?i='.$mn['privmsg_author']); ?>"><?php echo substr($mn['privmsg_body'],0,20); ?></a></div>
+                                        </li>
+                                    <?php } ?>
+                                    	<li>
+                                        <a href="<?php echo base_url('Pm'); ?>" >View All Messages</a>
+                                    	</li>
+                                     </ul>
+                                     <?php }else{?>
+                                      <ul class="dropdown-menu">
+                                            <li>No New Message</li>
+                                            <li><a href="<?php echo base_url('Pm'); ?>" >View All Messages</a></li>
+                                      </ul>
+                                     
+                                     <?php }?>
+                                     
+                                    </div>
+                                </li>
+                                <li class="logout">
+                                    <a href="<?php echo base_url()?>logout">
+									Log Out</a>
+                                </li>
+<?php exit;                        
         if ($notifications) {
             ?>
             <!--notifications-->
@@ -279,7 +375,7 @@ class Main extends CI_Controller {
             ?>
             <div class="notification-detail no-notification">
                 <ul>
-                    <li>No pending requests</li>
+                    <li>No Pending Request</li>
                 </ul>
             </div>
         <?php } ?>
@@ -345,6 +441,7 @@ class Main extends CI_Controller {
             </div>
         <?php } ?>
         <!--end TAG notifications-->
+        
         <div class="user-action">
             <a href="javascript:void(0)"><img src="<?php echo base_url(); ?>assets/images/users-icon.png" class="tagNotification" alt="" title="You are tagged by">
                 <?php if ($notifications) { ?>

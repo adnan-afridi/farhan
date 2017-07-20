@@ -9,82 +9,155 @@ $curUser = currentuser_session();
 ?>
 
 <!--Content-->
-<div class="top-profile-detail">
-    <div class="left-image">
-        <img src="<?php echo base_url(); ?>assets/images/profile_images/<?php echo $userData['profile_image']; ?>" alt="" title="">
-        <a href="#" class="change-btn">Change</a>
-    </div>
-    <div class="right-info">
-        <div class="edit-btn"><img src="<?php echo base_url(); ?>assets/images/edit-icon.png" alt=""></div>
-        <h2>John Doe</h2>
-        <p>
-            <?php echo $userData['profile_desc']; ?> 
-        </p>
-    </div>
-</div>
-<div class="big-image">
-    <img src="<?php echo base_url(); ?>assets/images/banner_images/<?php echo $userData['profile_banner']; ?>" alt="" title="">
-    <a href="#" class="change-btn">Change</a>
-</div>
-<div class="bottom-cont">
-    <div class="form-line">
-        <select id="state" name="state">
-            <option value="">Select State</option>
-            <?php
-            foreach ($states as $state) {
-                $selected = '';
-                if ($state['name'] == $userData['state']) {
-                    $selected = 'selected="selected"';
-                }
-                ?>
-                <option value="<?php echo $state['id']; ?>" <?php echo $selected; ?>><?php echo ($state['name']) ? $state['name'] : ""; ?></option>
-            <?php } ?>
-        </select>
-        <select id="city" name="city" class="last">
-            <option value="">City</option>
-        </select>
-    </div>
-    <div class="form-line">
-        <input type="text"  name="zip" id="zip" placeholder="Zip Code"  value="<?php echo ($userData['zip']) ? $userData['zip'] : ""; ?>"/>
-        <select class="last" id="interest" name="interest">
-            <option  value="">Show your interest</option>
-            <option <?php echo ($assesmentData['interest'] == 'Foreign language study') ? 'selected="selected"' : ""; ?> value="Foreign language study" >Foreign language study</option>
-            <option <?php echo ($assesmentData['interest'] == 'Reading') ? 'selected="selected"' : ""; ?> value="Reading">Reading</option>
-            <option <?php echo ($assesmentData['interest'] == 'Writing/blogging') ? 'selected="selected"' : ""; ?> value="Writing/blogging">Writing/blogging</option>
-            <option <?php echo ($assesmentData['interest'] == 'Music/musical instruments') ? 'selected="selected"' : ""; ?> value="Music/musical instruments">Music/musical instruments</option>
-            <option <?php echo ($assesmentData['interest'] == 'Jogging/walking') ? 'selected="selected"' : ""; ?> value="Jogging/walking">Jogging/walking</option>
-            <option <?php echo ($assesmentData['interest'] == 'Horseback riding') ? 'selected="selected"' : ""; ?> value="Horseback riding">Horseback riding</option>
-            <option <?php echo ($assesmentData['interest'] == 'Yoga') ? 'selected="selected"' : ""; ?> value="Yoga">Yoga</option>
-            <option <?php echo ($assesmentData['interest'] == 'Team sports: volleyball, bowling, soccer') ? 'selected="selected"' : ""; ?> value="Team sports: volleyball, bowling, soccer">Team sports: volleyball, bowling, soccer</option>
-            <option <?php echo ($assesmentData['interest'] == 'Card games') ? 'selected="selected"' : ""; ?> value="Card games">Card games</option>
-            <option <?php echo ($assesmentData['interest'] == 'Dinner or Movie club') ? 'selected="selected"' : ""; ?> value="Dinner or Movie club">Dinner or Movie club</option>
-            <option <?php echo ($assesmentData['interest'] == 'Ballroom dancing') ? 'selected="selected"' : ""; ?> value="Ballroom dancing">Ballroom dancing</option>
-            <option <?php echo ($assesmentData['interest'] == 'Volunteering') ? 'selected="selected"' : ""; ?> value="Volunteering">Volunteering</option>
-            <option <?php echo ($assesmentData['interest'] == 'Scrapbooking') ? 'selected="selected"' : ""; ?> value="Scrapbooking">Scrapbooking</option>
-            <option <?php echo ($assesmentData['interest'] == 'Needle arts: embroidery, cross-stitch') ? 'selected="selected"' : ""; ?> value="Needle arts: embroidery, cross-stitch">Needle arts: embroidery, cross-stitch</option>
-            <option <?php echo ($assesmentData['interest'] == 'Jewelry making') ? 'selected="selected"' : ""; ?> value="Jewelry making">Jewelry making</option>
-            <option <?php echo ($assesmentData['interest'] == 'Drawing/painting/photography') ? 'selected="selected"' : ""; ?> value="Drawing/painting/photography">Drawing/painting/photography</option>
-            <option <?php echo ($assesmentData['interest'] == 'Pottery') ? 'selected="selected"' : ""; ?> value="Pottery">Pottery</option>
-            <option <?php echo ($assesmentData['interest'] == 'Antiques') ? 'selected="selected"' : ""; ?> value="Antiques">Antiques</option>
-            <option <?php echo ($assesmentData['interest'] == 'Decor') ? 'selected="selected"' : ""; ?> value="Decor">Decor</option>
-            <option <?php echo ($assesmentData['interest'] == 'Postcards') ? 'selected="selected"' : ""; ?> value="Postcards">Postcards</option>
-            <option <?php echo ($assesmentData['interest'] == 'Genealogy') ? 'selected="selected"' : ""; ?> value="Genealogy">Genealogy</option>
-            <option <?php echo ($assesmentData['interest'] == 'Hiking/letterboxing/geocaching') ? 'selected="selected"' : ""; ?> value="Hiking/letterboxing/geocaching">Hiking/letterboxing/geocaching</option>
-            <option <?php echo ($assesmentData['interest'] == 'Bird-watching') ? 'selected="selected"' : ""; ?> value="Bird-watching">Bird-watching</option>
-            <option <?php echo ($assesmentData['interest'] == 'Hunting/fishing') ? 'selected="selected"' : ""; ?> value="Hunting/fishing">Hunting/fishing</option>
-            <option <?php echo ($assesmentData['interest'] == 'Cooking/baking') ? 'selected="selected"' : ""; ?> value="Cooking/baking">Cooking/baking</option>
-            <option <?php echo ($assesmentData['interest'] == 'Knitting') ? 'selected="selected"' : ""; ?> value="Knitting">Knitting</option>
-            <option <?php echo ($assesmentData['interest'] == 'Quilting') ? 'selected="selected"' : ""; ?> value="Quilting">Quilting</option>
-            <option <?php echo ($assesmentData['interest'] == 'information_technology') ? 'selected="selected"' : ""; ?> value="information_technology">Information Technology</option>
-        </select>
-    </div>
-    <div class="form-line">
-        <input type="text" name="dob" id="dob" placeholder="Date of Birth" value="<?php echo $userData['dob']; ?>"/>
-    </div>
-    <div class="form-line">
-        <input type="submit" value="Submit">
-    </div>
-</div>
+<div class="center-content">
+							<div class="profile-view-cont">
+								<div class="banner-img">
+                                	<?php if (file_exists(FCPATH.'/assets/images/banner_images/'.$userData['profile_banner']) && $userData['profile_banner']!='')  {?>
+									<img src="<?php echo base_url(); ?>assets/images/banner_images/<?php echo $userData['profile_banner']; ?>" alt="" title="">
+                                    
+                                   <?php }else{?>
+                                   <img src="<?php echo base_url(); ?>assets/images/banner.png" alt="" title="">
+                                   <?php }?>
+								</div>
+								<div class="profile-detail">
+									<div class="profile-line">
+										<div class="profile-img">
+                                        <?php
+										
+										 if (file_exists(FCPATH.'/assets/images/profile_images/'.$userData['profile_image']) && $userData['profile_image']!='')  {?>
+                                        
+                                        <img width="154px" height="154px" class="img-pp" src="<?php echo base_url(); ?>assets/images/profile_images/<?php echo $userData['profile_image']; ?>" alt="" title="">
+                                        
+                                        <?php }else{?>
+                                      <img width="154px" height="154px" class="img-pp" src="<?php echo base_url(); ?>assets/images/avatar-1.png" alt="" title="">  
+                                        
+                                        <?php }?>
+                                        
+                                        </div>
+										<h2><?php echo $userData['first_name']; ?> <?php echo $userData['last_name']; ?></h2>
+                                        
+                                        <?php if($userData['user_id']!=$curUser['user_id'] && $relation !=1){?>
+                                        
+                                        		
+                                                
+											<a href="#" class="add-friend">Add Friend</a>
+                                            
+                                         <?php }?>
+									</div>
+									<div class="profile-line">
+										<p><?php echo $userData['profile_desc']; ?> </p>
+									</div>
+									<div class="small-info">
+										<div class="info-line">State: <span><?php echo $userData['state']; ?></span></div>
+										<div class="info-line">City: <span><?php echo $userData['city']; ?></span></div>
+										<div class="info-line"><img src="<?php echo base_url(); ?>assets/images/music-image.png" alt="" title="">  Music</div>
+									</div>
+                                    <?php 
+									if (!empty($posts) && ($userData['user_id']==$curUser['user_id'] || $relation==1)) {?>
+                                    
+									<div class="timeline-outer">
+										<div class="title-text">Timeline</div>
+										<div class="time-line-cont">
+											<div class="fill"></div>
+										</div>
+									</div>
+                                   <?php 
+                                    
+            						foreach ($posts as $post) {
+										
+									 $postData = get_post_data($post['post_id']);
+                						if ($post['post_type'] == 1) {	
+									?>
+                                    
+                                    
+									<div class="chat-outer">
+										<div class="chat-box">
+											<div class="chat-box-upper">
+												<div class="chat-popup">
+													<h3><?php echo $post['title']; ?></h3>
+													<div class="chat-content">
+                                                    
+                                                     <?php foreach ($postData as $image) { 
+													if (file_exists(FCPATH.'/assets/images/post_images/'.$image['content'])) {
+													?>
+													<img data-fancybox="<?php echo $post['post_id']; ?>" href="<?php echo base_url(); ?>assets/images/post_images/<?php echo $image['content']; ?>" src="<?php echo base_url() ?>assets/images/post_images/<?php echo $image['content']; ?>" alt="" title="">
+												<?php }else{ ?>
+												<img data-fancybox="<?php echo $post['post_id']; ?>" href="<?php echo base_url(); ?>assets/images/post_images/dummy.png" src="<?php echo base_url(); ?>assets/images/post_images/thumbnail/dummy.png" alt="" title="">
+											   <?php } } ?>
+                                                    
+                                                    
+													</div>
+													<div class="like-row">
+														<a href="#"><img src="<?php echo base_url(); ?>assets/images/like-image.png" alt="" title=""> Like</a>
+														<a href="#">Reply</a>
+													</div>
+												</div>
+												<div class="bottom-arrow"><img src="<?php echo base_url(); ?>assets/images/chat-arrow.png" alt="" title=""></div>
+											</div>
+											<div class="chat-box-bottom">
+												<div class="avatar-img">
+                                                
+                                               <?php if (file_exists(FCPATH.'/assets/images/profile_images/'.$userData['profile_image']) && $userData['profile_image']!='')  {?> 
+                                                <img class="img-pp" width="38px" height="38px" src="<?php echo base_url() ?>assets/images/profile_images/<?php echo $userData['profile_image']; ?>" alt="" title="">
+                                                <?php }else{?>
+                                                 <img class="img-pp" width="38px" height="38px" src="<?php echo base_url() ?>assets/images/avatar-2.png" alt="" title="">
+                                                <?php }?>
+                                                
+                                                </div>
+												<div class="avatar-title"><?php echo $userData['first_name'].' '.$userData['last_name']; ?></div>
+											</div>
+										</div>
+									</div>
+                                    
+                                    
+                                    <?php }else{?>
+									<div class="chat-outer">
+										<div class="chat-box">
+											<div class="chat-box-upper">
+												<div class="chat-popup">
+													<h3><?php echo $post['title']; ?></h3>
+													<div class="chat-content">
+													</div>
+													<div class="like-row">
+														<a href="#"><img src="<?php echo base_url() ?>assets/images/like-image.png" alt="" title=""> Like</a>
+														<a href="#">Reply</a>
+													</div>
+													<div class="reply-cont">
+														<div class="avatar-small">
+                                                        <?php if (file_exists(FCPATH.'/assets/images/profile_images/'.$userData['profile_image']) && $userData['profile_image']!='')  {?> 
+                                                        <img class="img-pp" width="31px" height="32px" src="<?php echo base_url() ?>assets/images/profile_images/<?php echo $userData['profile_image']; ?>" alt="" title="">
+                                                        <?php }else{?>
+                                                        <img class="img-pp" width="31px" height="32px" src="<?php echo base_url() ?>assets/images/avatar-3.png" alt="" title="">
+                                                        <?php }?>
+                                                        
+                                                        </div>
+														<div class="reply-field">
+															<input name="" type="text" value="write reply">
+														</div>
+													</div>
+												</div>
+												<div class="bottom-arrow"><img src="<?php echo base_url() ?>assets/images/chat-arrow.png" alt="" title=""></div>
+											</div>
+											<div class="chat-box-bottom">
+												<div class="avatar-img">
+                                                <?php if (file_exists(FCPATH.'/assets/images/profile_images/'.$userData['profile_image']) && $userData['profile_image']!='')  {?> 
+                                                <img class="img-pp" width="38px" height="38px" src="<?php echo base_url() ?>assets/images/profile_images/<?php echo $userData['profile_image']; ?>" alt="" title="">
+                                                <?php }else{?>
+													<img class="img-pp" width="38px" height="38px" src="<?php echo base_url() ?>assets/images/avatar-2.png" alt="" title="">
+													<?php }?>
+                                                
+                                                </div>
+												<div class="avatar-title"><?php echo $userData['first_name'].' '.$userData['last_name']; ?></div>
+											</div>
+										</div>
+									</div>
+                                    
+									  <?php 
+                                        }
+                                      } }?>
+								</div>
+							</div>
+						</div>
 
 
 <script type="text/javascript">

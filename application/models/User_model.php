@@ -232,7 +232,7 @@ class User_model extends CI_Model {
         $this->db->where("r.friend_id", $id);
         $this->db->where("r.confirm", '0');
         $result = $this->db->get()->result_array();
-//echo $this->db->last_query();exit;
+		
         return $result;
     }
 

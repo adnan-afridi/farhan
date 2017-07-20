@@ -64,5 +64,6 @@ class Profile_model extends CI_Model {
 		$this->db->where($field, $val);
 		$this->db->update($table, $array);
 	}
+	
 
 }

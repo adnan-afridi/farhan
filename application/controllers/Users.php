@@ -68,7 +68,14 @@ class Users extends CI_Controller {
         $usersData = $userModel->search_user($val['value']);
 
         foreach ($usersData as $user) {
-            $img = !empty($user['profile_image'])?$user['profile_image']:'dummy-img.png';
+			
+			if (file_exists(ROOT_PATH.'/assets/images/profile_images/'.$user['profile_image']) && $user['profile_image']!=''){
+			$img = base_url().'/assets/images/profile_images/'.$user['profile_image'];	
+				
+			}else{
+			$img = base_url().'/assets/images/profile_images/dummy-img.png';	
+			}
+			
             $item = array(
                 'value' => $user['user_email'],
                 'image' => $img,

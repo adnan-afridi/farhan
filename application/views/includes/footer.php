@@ -39,7 +39,7 @@ if (array_filter($curUser)) {
 }
 ?>
 <!--Footer-->
-<div id="awan"></div>
+
 
 <!-- jQuery -->
 <script src="<?php echo base_url(); ?>assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,6 +77,7 @@ if (array_filter($curUser)) {
 <!-- Custom scripts -->
 <script src="<?php echo base_url(); ?>assets/jquery/js/jquery-ui-1.12.1.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/scripts.js"></script>
+<div id="awan"></div>
 </body>
 
 </html>

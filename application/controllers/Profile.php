@@ -17,16 +17,38 @@ class Profile extends CI_Controller {
         render_view('profile.php');
     }
 
-    public function user_profile() {
+    public function user_profile($userID=false) {
+		
+		$curUser = currentuser_session();
 
-        $curUser = currentuser_session();
+		if($userID){
+		$userModel = model_load_model('User_model');
+		$userID	=	$userID;	
+		$relation = $userModel->check_relation($curUser['user_id'], $userID);
+        $data['relation'] = $relation['confirm'];
+		
+			
+		}else{
+		$userID	=	$curUser['user_id'];	
+			
+		}
+
+        
 
         $model = model_load_model('profile_model');
         $data['states'] = $model->getStates();
         $basicModel = load_basic_model('profile');
-        $data['assesmentData'] = $basicModel->get(array('user_id' => $curUser['user_id']), 1);
+        $data['assesmentData'] = $basicModel->get(array('user_id' => $userID), 1);
+		$postsModel = model_load_model('Posts_model');
+        $data['posts'] = $postsModel->getPosts($userID);
+		
 
-        $data['userData'] = $model->getUserInfo($curUser['user_id']);
+        $data['userData'] = $model->getUserInfo($userID);
+		
+		
+		
+		
+		
 
         render_view('profile', $data);
     }
