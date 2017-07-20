@@ -219,7 +219,6 @@ class Users extends CI_Controller {
 
     public function change_password_email() {
 
-        check_session();
         if ($_REQUEST) {
             $userId = $this->input->get_post('id');
             $viewData['userId'] = $userId;

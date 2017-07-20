@@ -38,7 +38,7 @@ class Posts_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('posts');
         $this->db->where('user_id', $userId);
-        $this->db->order_by('created', 'DESC');
+        $this->db->order_by('created', 'ASC');
         $result = $this->db->get()->result_array();
         return $result;
     }

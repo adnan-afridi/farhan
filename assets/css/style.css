@@ -192,3 +192,7 @@ Responsive styles
 }
 
 .img-pp{border-radius:50%;}
+.avatar-img{width: 32px;height: 32px}
+.avatar-img img{border-radius: 20px;}
+.comment-row .profile-img{width: 32px !important;margin: 0 !important;height: 32px !important;}
+.profile-img img{width: 32px;}

@@ -60,7 +60,7 @@ function comments_template($comment) {
     $template .= '<a href="javascript:void(0)">'.$userInfo['first_name'].':</a>';
     $template .= '<span>'.$comment['comment_body'].'</span>';
     $template .= '<ul>';
-    $template .= '<li><img src="'.base_url().'assets/images/like-img2.png" alt="" title=""><a href="javascript:void(0)">Like</a></li>';
+//    $template .= '<li><img src="'.base_url().'assets/images/like-img2.png" alt="" title=""><a href="javascript:void(0)">Like</a></li>';
     $template .= '<li>';
     $template .= '<a href="javascript:void(0)" class="comment-reply">Reply</a>';
     $template .= '<div style="clear:both"></div>';
