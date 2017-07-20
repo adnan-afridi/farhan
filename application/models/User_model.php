@@ -343,8 +343,8 @@ class User_model extends CI_Model {
 
         $this->db->select("confirm");
         $this->db->from("relations r");
-        $this->db->where("r.user_id", $loggedInUser, FALSE);
-        $this->db->where("r.friend_id", $userId, FALSE);
+        $this->db->where_in("r.user_id", $loggedInUser.",".$userId, FALSE);
+        $this->db->where_in("r.friend_id", $loggedInUser.",".$userId, FALSE);
         $result = $this->db->get()->result_array();
         if (empty($result)) {
             $result['confirm'] = 2;
@@ -360,18 +360,40 @@ class User_model extends CI_Model {
         if (empty($userId)) {
             return false;
         }
-
+		$curUser = currentuser_session();
+        $curUserId = $curUser['user_id'];
         $this->db->select("u.user_id as ID, u.first_name, u.last_name, u.user_email, p.*,r.confirm as relation");
         $this->db->from("relations r");
         $this->db->join("users u", 'u.user_id = r.friend_id');
         $this->db->join("profile p", 'p.user_id = r.friend_id', 'LEFT');
         $this->db->where("r.friend_id", $userId, FALSE);
+		$this->db->or_where("r.user_id", $curUserId, FALSE);
         $result = $this->db->get()->result_array();
 //        if (empty($result)) {
 //            return false;
 //        }
         return $result;
     }
+	
+	public function get_friends($userId) {
+
+        if (empty($userId)) {
+            return false;
+        }
+
+        $this->db->select("u.user_id as ID, u.first_name, u.last_name, u.user_email, p.*,r.confirm as relation");
+        $this->db->from("relations r");
+        $this->db->join("users u", 'u.user_id = r.friend_id');
+        $this->db->join("profile p", 'p.user_id = r.friend_id', 'LEFT');
+        $this->db->where("r.user_id", $userId, FALSE);
+        $result = $this->db->get()->result_array();
+//        if (empty($result)) {
+//            return false;
+//        }
+        return $result;
+    }
+	
+	
 
     public function get_users_info($ids = NULL, $userId) {
         if (empty($ids) || $userId == '') {

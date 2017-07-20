@@ -18,7 +18,7 @@ $error = $CI->session->flashdata('error');
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title></title>
+        <title>Reelyou</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
         <!-- Font awesome -->

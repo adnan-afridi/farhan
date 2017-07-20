@@ -23,7 +23,7 @@ $userData = $model->get(array('user_id' => $userId), 1);
         <a href="index.html"><img src="<?php echo base_url(); ?>assets/images/logo.png" alt="" title=""></a>
     </div>
     <div class="user-info">
-        <div class="img"><img src="<?php echo $img = (!empty($userData['profile_image'])) ? base_url()."assets/images/profile_images/".$userData['profile_image'] : base_url()."assets/images/profile_images/dummy-img.png" ?>" alt="" title=""></div>
+        <div class="img"><img class="img-pp" width="49px" height="50px" src="<?php echo $img = (!empty($userData['profile_image'])) ? base_url()."assets/images/profile_images/".$userData['profile_image'] : base_url()."assets/images/profile_images/dummy-img.png" ?>" alt="" title=""></div>
         <div class="name"><?php echo $curUser['first_name'].' '.$curUser['last_name']; ?></div>
     </div>
     <nav>
@@ -63,10 +63,10 @@ $userData = $model->get(array('user_id' => $userId), 1);
 //        refresh left menu
 
 
-        loadlink(); // This will run on page load
-       setInterval(function () {
-         loadlink() // this will run after every 5 seconds
-       }, 10000);
+       // loadlink(); // This will run on page load
+      // setInterval(function () {
+        // loadlink() // this will run after every 5 seconds
+       //}, 10000);
 
 //        confirm request
 

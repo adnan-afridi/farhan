@@ -75,9 +75,11 @@ class Main extends CI_Controller {
 
         $curUser = currentuser_session();
         $userId = $curUser['user_id'];
+		$postsModel = model_load_model('Posts_model');
+        $data['posts'] = $postsModel->getPosts($userId);
         $userModel = model_load_model('User_model');
         $data['users'] = $userModel->get_users($userId);
-
+		$data['recentActivities'] = $userModel->recent_activity($userId);
         render_view('get-connected.php', $data);
     }
 
