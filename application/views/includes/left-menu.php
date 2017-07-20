@@ -63,10 +63,10 @@ $userData = $model->get(array('user_id' => $userId), 1);
 //        refresh left menu
 
 
-       // loadlink(); // This will run on page load
-      // setInterval(function () {
-        // loadlink() // this will run after every 5 seconds
-       //}, 10000);
+        loadlink(); // This will run on page load
+         setInterval(function () {
+         loadlink() // this will run after every 5 seconds
+       }, 10000);
 
 //        confirm request
 
@@ -164,7 +164,6 @@ $userData = $model->get(array('user_id' => $userId), 1);
     });
     function loadlink() {
 //
-        console.log('left menu reloaded');
        $('.left-side-notifications').load(window.base_url + 'Main/left_menu_notifications').fadeIn("slow");
    }
 
