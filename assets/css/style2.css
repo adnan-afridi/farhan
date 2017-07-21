@@ -454,7 +454,7 @@ ul, ul li, ul ol, ul li ul, ul li ul li { list-style: none; margin: 0; }
     margin-left: 10px;
 }
 .comment-del{float: none !important;margin-left: 10px;}
-.float-right{float:right;}
+.float-right{float:right !important;}
 .notification-detail.no-notification li{color:#fff;}
 .comment-profile-image{width: 23px;float:left;}
 #zip-preloader{position: relative;top: -29px;left: 5px;}

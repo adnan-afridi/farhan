@@ -196,3 +196,4 @@ Responsive styles
 .avatar-img img{border-radius: 20px;}
 .comment-row .profile-img{width: 32px !important;margin: 0 !important;height: 32px !important;}
 .profile-img img{width: 32px;}
+.float-right{float:right !important;}

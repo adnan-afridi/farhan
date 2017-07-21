@@ -377,11 +377,11 @@ $userData = $model->get(array('user_id' => $userId), 1);
         });
 
         //        tag a friend
-        $(document).on('keyup', '#comment', function (e) {
+        $(document).on('keyup', '.comment', function (e) {
             var input = $(this).val();
 //            console.log(input.substr(input.indexOf("@") + 1));
-            if ($('#comment').val().indexOf('@') > -1) {
-                $("#comment").autocomplete({
+            if ($(this).val().indexOf('@') > -1) {
+                $(this).autocomplete({
                     source: function (request, response) {
 
                         $.ajax({
@@ -401,7 +401,7 @@ $userData = $model->get(array('user_id' => $userId), 1);
                         var inputVal = input.substr(0, input.indexOf('@'));
                         var temp = '<input type="hidden" value="' + ui.item.id + '" name="tag-user[]"/>';
                         $(temp).appendTo($('#comment'));
-                        $('#comment').val(inputVal.concat(ui.item.name));
+                        $(this).val(inputVal.concat(ui.item.name));
                     }
                 });
             }

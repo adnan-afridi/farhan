@@ -59,10 +59,24 @@ $curUser = currentuser_session();
                 $postData = get_post_data($post['post_id']);
                 if ($post['post_type'] == 1) {
                     ?>
+
                     <div class="chat-outer">
                         <div class="chat-box">
                             <div class="chat-box-upper">
                                 <div class="chat-popup">
+
+                                    <!--actions buttons-->
+                                    <div class="btn-group float-right profile-action-dropdown">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" >
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="javascript:void(0)" class="del-post" post="<?php echo $post['post_id']; ?>">Delete</a></li>
+                                            <li><a href="javascript:void(0)" class="report-post" post="<?php echo $post['post_id']; ?>">Report</a></li>
+                                        </ul>
+                                    </div>
+                                    <!--actions buttons-->
+
                                     <h3><?php echo $post['title']; ?></h3>
                                     <div class="chat-content">
                                         <?php
@@ -90,6 +104,15 @@ $curUser = currentuser_session();
                                         <?php echo $comments = get_post_comments($post['post_id'], 0); ?>
                                     </div>
                                     <!--END COMMENTS-->
+
+                                    <!--write a comment-->
+                                    <div>
+                                        <form method="post" class="form-horizontal" action="">
+                                            <input type="text" name="comment"  class="form-control comment" placeholder="Your comment"/>
+                                            <input type="hidden" name="postId" value="<?php echo $post['post_id']; ?>" class="form-control"/>
+                                            <input type="hidden" name="parent" value="0" class="form-control"/>
+                                        </form>
+                                    </div>
                                 </div>
                                 <div class="bottom-arrow"><img src="<?php echo base_url() ?>assets/images/chat-arrow.png" alt="" title=""></div>
                             </div>
@@ -107,6 +130,17 @@ $curUser = currentuser_session();
                         <div class="chat-box">
                             <div class="chat-box-upper">
                                 <div class="chat-popup">
+                                    <!--actions buttons-->
+                                    <div class="btn-group float-right profile-action-dropdown">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" >
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="javascript:void(0)" class="del-post" post="<?php echo $post['post_id']; ?>">Delete</a></li>
+                                            <li><a href="javascript:void(0)" class="report-post" post="<?php echo $post['post_id']; ?>">Report</a></li>
+                                        </ul>
+                                    </div>
+                                    <!--actions buttons--> 
                                     <h3><?php echo $post['title']; ?></h3>
                                     <div class="chat-content">
                                     </div>
@@ -121,8 +155,12 @@ $curUser = currentuser_session();
 
                                                 <?php echo $comments = get_post_comments($post['post_id'], 0); ?>
                                             </div>
-
-<!--                                            <input name="" type="text" postid="<?php // echo $post['post_id'] ?>">-->
+                                            <!--write a comment-->
+                                            <form method="post" class="form-horizontal" action="">
+                                                <input type="text" name="comment"  class="form-control comment" placeholder="Your comment"/>
+                                                <input type="hidden" name="postId" value="<?php echo $post['post_id']; ?>" class="form-control"/>
+                                                <input type="hidden" name="parent" value="0" class="form-control"/>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -141,6 +179,33 @@ $curUser = currentuser_session();
         ?>
     </div>
 </div>
+
+
+<!--confirmation dialog-->
+<div class="hidden">
+    <div id="dialog-confirm" title="Delete Confirmation">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span> Are you sure you want to delete this post?</p>
+    </div>
+
+    <div id="delete-comment" title="Comment Deletion">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure you want to delete this comment?</p>
+    </div>
+
+    <!--// REPORT A POST-->
+    <div id="report-post-dialog" title="Report Post">
+        <div class="radio">
+            <label>
+                <input type="radio" name="report-post" value="1"> It is a spam
+            </label>
+            <div class="clearfix"></div>
+            <label>
+                <input type="radio" name="report-post" value="2"> It is annoying
+            </label>
+        </div>
+    </div>
+</div>
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $(document).on('click', '.connect-to', function (e) {
@@ -280,66 +345,236 @@ $curUser = currentuser_session();
 
     $('.comment-reply').on('click', function (e) {
 
-        $('.comment-box').parent('div').remove();
+//        $('.comment-box').parent('div').remove();
         var post = $(this).parents('.comments-box').attr('post-id');
         var parent = $(this).closest('.comment-row').attr('id');
-        var commentBox = '<div class="row"><form method="post" class="comment-form form-horizontal col-sm-6 comment-box" action="">';
-        commentBox += '<input type="text" name="comment" id="comment" class="form-control" placeholder="Your comment"/>';
+        var commentBox = '<div class="row"><form method="post" class="form-horizontal col-sm-6 comment-box" action="">';
+        commentBox += '<input type="text" name="comment"  class="form-control comment" placeholder="Your comment"/>';
         commentBox += '<input type="hidden" name="postId" value="' + post + '" class="form-control"/>';
         commentBox += '<input type="hidden" name="parent" value="' + parent + '" class="form-control"/>';
         commentBox += '</form></div>';
         $(commentBox).insertAfter($(this).closest('.comment-row'));
-        $('input[name="comment"]').focus();
+        $('.comment-form input[name="comment"]').focus();
     });
-    
+
     //comment submit
-        $(document).on('submit', 'form.comment-form', function (e) {
-            e.preventDefault();
-            var parentId = $('input[name="parent"]').val();
-            var comment = $('#comment').val();
-            var formData = $('form').serialize();
-//console.log(formData);return;
+    $(document).on('submit', 'form.comment-form', function (e) {
+        e.preventDefault();
+        var parentId = $('input[name="parent"]').val();
+        var comment = $('.comment', this).val();
+        var formData = $(this).serialize();
+//        console.log(formData);
+//        return;
 
-            var tagUsers = [];
-            $('input[name="tag-user[]"]').each(function () {
-                tagUsers.push($(this).val());
-            });
-            if (comment.length == 0) {
-                return false;
-            }
+        var tagUsers = [];
+        $('input[name="tag-user[]"]').each(function () {
+            tagUsers.push($(this).val());
+        });
 
-            var splitData = formData.split('&');
-         
 
-            var commentId = splitData[2].split('=')[1];
-            var data = formData + '&tagUser=' + tagUsers;
-//            console.log(data);return;
-            $.ajax({
-                url: window.base_url + 'Comments/new_comment',
-                data: data,
-                type: 'POST',
-                success: function (postBack) {
-                    var result = $.parseJSON(postBack);
+        if (comment.length == 0) {
+            return false;
+        }
+
+        var splitData = formData.split('&');
+
+
+        var commentId = splitData[2].split('=')[1];
+        var data = formData + '&tagUser=' + tagUsers;
+//        console.log(data);
+//        return;
+        $.ajax({
+            url: window.base_url + 'Comments/new_comment',
+            data: data,
+            type: 'POST',
+            success: function (postBack) {
+                var result = $.parseJSON(postBack);
 //                    console.log(result);
-                    if (result.msg == 1) {
+                if (result.msg == 1) {
 //                        console.log(data);
-                        var appendToDiv = $('form.comment-form').parents('.comment-row');
-                        console.log(appendToDiv);
-                        $('form.comment-form').remove();
-                        if (parentId == '0') {
+                    var appendToDiv = $('form.comment-form').parents('.comment-row');
+                    console.log(appendToDiv);
+
+                    if (parentId == '0') {
 //                            if (appendToDiv.firstElementChild == 'ul') {
-                            $(result.comment).appendTo('.comments-box');
+                        $(result.comment).appendTo('.comments-box');
 //                            } else {
 //                                var commentsBox = '<ul>' + result.comment + '</ul>';
 //                                $(commentsBox).appendTo(appendToDiv);
 //                            }
-                        } else {
-                            $(result.comment).appendTo($('#' + commentId));
-                        }
-
+                    } else {
+                        $('form.comment-form').remove();
+                        $(result.comment).appendTo($('#' + commentId));
                     }
+
+                }
+            }
+        });
+    });
+
+    //        report post
+    $('.report-post').on('click', function () {
+        var $this = $(this);
+        $("#report-post-dialog").dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Submit": function () {
+                    var thisdialog = $(this);
+                    var post = $this.attr('post');
+                    var reportType = $('input[name="report-post"]:checked').val();
+                    var data = 'post_id=' + post + '&type=' + reportType;
+                    $.ajax({
+                        url: window.base_url + 'Posts/report_post',
+                        data: data,
+                        type: 'POST',
+                        success: function (postBack) {
+//                    console.log(postBack);return;
+                            var result = $.parseJSON(postBack);
+                            if (result.msg == 1) {
+                                $(thisdialog).dialog("close");
+                                var msg = '<div class="alert alert-success  messages">Reported successfully.</div>';
+                                $(msg).appendTo('.messages-container');
+                                $('.messages-container').delay(3000).fadeOut();
+                            }
+                        }
+                    });
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+
+    //        delete post
+    $('.del-post').on('click', function () {
+        var $this = $(this);
+        $("#dialog-confirm").dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Yes": function () {
+                    var thisdialog = $(this);
+                    var post = $this.attr('post');
+                    var data = 'post=' + post;
+                    $.ajax({
+                        url: window.base_url + 'Posts/delete_post',
+                        data: data,
+                        type: 'POST',
+                        success: function (postBack) {
+                            var result = $.parseJSON(postBack);
+//                    console.log(result);
+                            if (result.msg == 1) {
+                                $(thisdialog).dialog("close");
+                                $($this).parents('.chat-outer').remove();
+                            }
+                        }
+                    });
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+    $('#del-posts').on('click', function () {
+        var $this = $(this);
+        var post = $(tihs).attr('post');
+        var data = 'post=' + post;
+        $.ajax({
+            url: window.base_url + 'Posts/delete_post',
+            data: data,
+            type: 'POST',
+            success: function (postBack) {
+                var result = $.parseJSON(postBack);
+//                    console.log(result);
+                if (result.msg == 1) {
+                    $($this).parents('.chat-outer').remove();
+                }
+            }
+        });
+    });
+
+    //        tag a friend
+    $(document).on('keyup', '.comment', function (e) {
+//            to submit only this form(
+        $('form').removeClass('comment-form');
+        $(this).parent('form').addClass('comment-form');
+        var input = $(this).val();
+//            console.log(input.substr(input.indexOf("@") + 1));
+        if ($(this).val().indexOf('@') > -1) {
+            $(this).autocomplete({
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: window.base_url + 'Users/search_user',
+                        dataType: "json",
+                        data: {
+                            value: input.substr(input.indexOf("@") + 1)
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 2,
+                select: function (event, ui) {
+                    event.preventDefault();
+                    var inputVal = input.substr(0, input.indexOf('@'));
+                    var temp = '<input type="hidden" value="' + ui.item.id + '" name="tag-user[]"/>';
+                    $(temp).appendTo($(this));
+                    $(this).val(inputVal.concat(ui.item.name));
                 }
             });
-        });
+        }
+    });
 
+
+    //post cross show hide
+    $('.comment-row').on('mouseover', function () {
+        $(this).find('.comment-del').removeClass('hidden');
+    }).on('mouseout', function () {
+        $(this).find('.comment-del').addClass('hidden');
+    });
+
+    $(document).on('click', '.comment-del', function () {
+        var $commentRow = $(this).closest('.comment-row');
+        var commentId = $(this).closest('.comment-row').attr('id');
+        $("#delete-comment").dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Yes": function () {
+                    var thisdialog = $(this);
+//                        var post = $this.attr('post');
+                    var data = 'comment=' + commentId;
+                    $.ajax({
+                        url: window.base_url + 'Comments/delete_comment',
+                        data: data,
+                        type: 'POST',
+                        success: function (postBack) {
+                            var result = $.parseJSON(postBack);
+//                    console.log(result);
+                            if (result.msg == 1) {
+                                $(thisdialog).dialog("close");
+                                $($commentRow).remove();
+                            }
+                        }
+                    });
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
 </script>
