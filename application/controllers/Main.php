@@ -84,8 +84,49 @@ class Main extends CI_Controller {
     }
 
     public function inspiration_board() {
-        check_session();
-        render_view('inspiration-board');
+        
+		$this->form_validation->set_rules('background','background','required');
+		$this->form_validation->set_rules('quote','quote','required');	
+	
+		if($this->form_validation->run()==false)
+		{
+		
+		
+		check_session();
+		
+		$service_url     = 'http://quotes.rest/qod.json?category=inspire';
+        $curl            = curl_init($service_url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $curl_response   = curl_exec($curl);
+        curl_close($curl);
+        $json_objekat    = json_decode($curl_response);
+        $quotes          = $json_objekat->contents->quotes;
+		$data['quotes']  = $quotes ;
+		
+        render_view('inspiration-board', $data);
+		
+		
+		}else{
+		$curUser = currentuser_session();
+		$data['user_id']	=	$curUser['user_id'];
+		$data['title']		=	$this->input->post('quote');
+		$data['post_type']	=	3;
+		$detail['post_id']	=	$this->Profile_model->insert_array('posts',$data);
+		$detail['content']	=	$this->input->post('background');
+		$this->Profile_model->insert_array('post_data',$detail);
+		
+		header('location:'.base_url().'profile/timeline');
+		
+		
+		
+		
+		
+		
+		
+			
+		}
     }
 
     public function process_login() {

@@ -65,5 +65,11 @@ class Profile_model extends CI_Model {
 		$this->db->update($table, $array);
 	}
 	
+	function insert_array($table,$data)
+	{
+		$this->db->insert( $table,$data );
+		return $this->db->insert_id();	
+	}
+	
 
 }
