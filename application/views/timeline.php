@@ -101,6 +101,42 @@ $curUser = currentuser_session();
                     </div>
                     <?php
                 }
+				else if($post['post_type']==3){
+                    ?>
+                    <div class="chat-outer">
+                        <div class="chat-box">
+                            <div class="chat-box-upper">
+                                <div class="chat-popup">
+                                    <h3><?php echo $post['title']; ?></h3>
+                                    <div class="chat-content">
+                                        <?php
+                                        foreach ($postData as $image) {?>
+                                                <img data-fancybox="<?php echo $post['post_id']; ?>" href="<?php echo $image['content']; ?>" src="<?php echo $image['content']; ?>" alt="" title="">
+                                          
+                                        <?php }
+                                        ?>
+                                    </div>
+                                    <div class="like-row">
+                                        <a href="#"><img src="<?php echo base_url() ?>assets/images/like-image.png" alt="" title=""> Like</a>
+                                        <a href="#">Reply</a>
+                                    </div>
+
+                                    <!--COMMENTS-->
+                                    <div class="row comments-box" post-id="<?php echo $post['post_id']; ?>">
+                                        <?php echo $comments = get_post_comments($post['post_id'], 0); ?>
+                                    </div>
+                                    <!--END COMMENTS-->
+                                </div>
+                                <div class="bottom-arrow"><img src="<?php echo base_url() ?>assets/images/chat-arrow.png" alt="" title=""></div>
+                            </div>
+                            <div class="chat-box-bottom">
+                                <div class="avatar-img"><img src="<?php echo base_url() ?>assets/images/profile_images/<?php echo $userData['profile_image']; ?>" alt="" title=""></div>
+                                <div class="avatar-title"><?php echo $userData['first_name'].' '.$userData['last_name']; ?></div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
                 else {
                     ?>
                     <div class="chat-outer">

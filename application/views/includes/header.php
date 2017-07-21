@@ -10,6 +10,8 @@ $curUser = currentuser_session();
 $loggedIn = $curUser['loggedIn'];
 $success = $CI->session->flashdata('success');
 $error = $CI->session->flashdata('error');
+       
+  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +79,7 @@ $error = $CI->session->flashdata('error');
     </head>
     <body>
         <div class="wrapper">
-            <div class="container">
+            <div class="<?php if (!isset($loginPage)){ echo "container"; }?>">
 
                 <!--messages-->
                 <div class="text-center">
