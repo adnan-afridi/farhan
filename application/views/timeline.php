@@ -124,7 +124,7 @@ $curUser = currentuser_session();
                     </div>
                     <?php
                 }
-				else if($post['post_type']==3){
+                else if ($post['post_type'] == 3) {
                     ?>
                     <div class="chat-outer">
                         <div class="chat-box">
@@ -132,10 +132,9 @@ $curUser = currentuser_session();
                                 <div class="chat-popup">
                                     <h3><?php echo $post['title']; ?></h3>
                                     <div class="chat-content">
-                                        <?php
-                                        foreach ($postData as $image) {?>
-                                                <img data-fancybox="<?php echo $post['post_id']; ?>" href="<?php echo $image['content']; ?>" src="<?php echo $image['content']; ?>" alt="" title="">
-                                          
+                                        <?php foreach ($postData as $image) { ?>
+                                            <img data-fancybox="<?php echo $post['post_id']; ?>" href="<?php echo $image['content']; ?>" src="<?php echo $image['content']; ?>" alt="" title="">
+
                                         <?php }
                                         ?>
                                     </div>
@@ -384,23 +383,23 @@ $curUser = currentuser_session();
 //        $('.comment-box').parent('div').remove();
         var post = $(this).parents('.comments-box').attr('post-id');
         var parent = $(this).closest('.comment-row').attr('id');
-        var commentBox = '<div class="row"><form method="post" class="form-horizontal col-sm-6 comment-box" action="">';
-        commentBox += '<input type="text" name="comment"  class="form-control comment" placeholder="Your comment"/>';
+        var commentBox = '<div class="row"><form method="post" class="form-horizontal col-sm-6" action="">';
+        commentBox += '<input type="text" name="comment"  class="form-control reply-input comment" placeholder="Your comment"/>';
         commentBox += '<input type="hidden" name="postId" value="' + post + '" class="form-control"/>';
         commentBox += '<input type="hidden" name="parent" value="' + parent + '" class="form-control"/>';
         commentBox += '</form></div>';
         $(commentBox).insertAfter($(this).closest('.comment-row'));
-        $('.comment-form input[name="comment"]').focus();
+        $('.reply-input').focus();
     });
 
     //comment submit
     $(document).on('submit', 'form.comment-form', function (e) {
         e.preventDefault();
-        var parentId = $('input[name="parent"]').val();
+        var parentId = $('input[name="parent"]',this).val();
         var comment = $('.comment', this).val();
         var formData = $(this).serialize();
-//        console.log(formData);
-//        return;
+//        console.log(parentId);
+//        return;par
 
         var tagUsers = [];
         $('input[name="tag-user[]"]').each(function () {
@@ -429,9 +428,10 @@ $curUser = currentuser_session();
                 if (result.msg == 1) {
 //                        console.log(data);
                     var appendToDiv = $('form.comment-form').parents('.comment-row');
-                    console.log(appendToDiv);
+//                    console.log(appendToDiv);
 
-                    if (parentId == '0') {
+                    if (parentId == 0) {
+                        console.log('no');
 //                            if (appendToDiv.firstElementChild == 'ul') {
                         $(result.comment).appendTo('.comments-box');
 //                            } else {
@@ -439,7 +439,8 @@ $curUser = currentuser_session();
 //                                $(commentsBox).appendTo(appendToDiv);
 //                            }
                     } else {
-                        $('form.comment-form').remove();
+                        console.log('how');
+                        $(document).find('.comment-form').remove();
                         $(result.comment).appendTo($('#' + commentId));
                     }
 

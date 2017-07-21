@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-define('BASE_URL', 'http://localhost/reellyou_latest');
-define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT'].'/reellyou_latest');
+define('BASE_URL', 'http://localhost/reellyou');
+define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT'].'/reellyou');
 define('HTTP_HOST', BASE_URL);
 
 

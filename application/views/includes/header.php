@@ -10,8 +10,6 @@ $curUser = currentuser_session();
 $loggedIn = $curUser['loggedIn'];
 $success = $CI->session->flashdata('success');
 $error = $CI->session->flashdata('error');
-       
-  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,10 +28,12 @@ $error = $CI->session->flashdata('error');
         <!-- Style -->
         <?php if (isset($loginPage)) { ?>
             <link href="<?php echo base_url(); ?>assets/css/style2.css" rel="stylesheet">
-        <?php }
-        else { ?>
+            <?php
+        }
+        else {
+            ?>
             <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet">
-<?php } ?>
+        <?php } ?>
         <link href="<?php echo base_url(); ?>assets/js/jcrop/css/jquery.Jcrop.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/jquery/css/jquery-ui.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/jQuery-File-Upload/css/jquery.fileupload.css">
@@ -79,7 +79,11 @@ $error = $CI->session->flashdata('error');
     </head>
     <body>
         <div class="wrapper">
-            <div class="<?php if (!isset($loginPage)){ echo "container"; }?>">
+            <div class="<?php
+            if (!isset($loginPage)) {
+                echo "container";
+            }
+            ?>">
 
                 <!--messages-->
                 <div class="text-center">
@@ -89,7 +93,7 @@ $error = $CI->session->flashdata('error');
                             <div class="alert alert-danger messages"><?php echo $error; ?></div>
                         <?php }if ($success) { ?>
                             <div class="alert alert-success  messages"><?php echo $success; ?></div>
-<?php } ?>
+                        <?php } ?>
                     </div>
                 </div>
                 <!--end messages-->
@@ -102,45 +106,45 @@ $error = $CI->session->flashdata('error');
                     ?>
                     <!--end left menu-->
                     <div class="right-cont-box">
-<?php if ($loggedIn) { ?>
+                        <?php if ($loggedIn) { ?>
 
-						<div class="header-cont">
-                        <a class="navbar-minimalize" href="#"><i class="fa fa-bars"></i> </a>
-                        <div class="right-cont">
-                            <ul class="left-side-notifications">
-                                <li>
-                                    <div class="dropdown">
-                                        <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/user-icon.png" alt="" title=""></a>
-                                     
-                                    </div>
-                                </li>
-                                <li>
-                                	<div class="dropdown">
-                                    <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/bell-icon.png" alt="" title=""></a>
-                                  
-                                    </div>
-                                </li>
-                                <li>
-                                <div class="dropdown">
-                                    <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/mail-icon.png" alt="" title=""></a>
-                                    
-                                    </div>
-                                </li>
-                                <li class="logout">
-                                    <a href="<?php echo base_url()?>logout">
-									Log Out</a>
-                                </li>
-                            </ul>
-                        </div>
-                       <form method="post" action="<?php echo base_url('Users/search_users'); ?>">
+                            <div class="header-cont">
+                                <a class="navbar-minimalize" href="#"><i class="fa fa-bars"></i> </a>
+                                <div class="right-cont">
+                                    <ul class="left-side-notifications">
+                                        <li>
+                                            <div class="dropdown">
+                                                <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/user-icon.png" alt="" title=""></a>
+
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/bell-icon.png" alt="" title=""></a>
+
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <a href="#" type="button" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url(); ?>assets/images/mail-icon.png" alt="" title=""></a>
+
+                                            </div>
+                                        </li>
+                                        <li class="logout">
+                                            <a href="<?php echo base_url() ?>logout">
+                                                Log Out</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <form method="post" action="<?php echo base_url('Users/search_users'); ?>">
                                     <input type="search" class="search-user" id="left_search" placeholder="Search..." />
                                 </form>
-                    	</div>
+                            </div>
 
 
 
-                            
-<?php } ?>
+
+                        <?php } ?>
                         <div class="inner-content">
                             <div class="center-content">
 
